@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dragón">
+<meta name="theme-color" content="#08040f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icons/icon-192.svg">
+<link rel="apple-touch-icon" href="icons/icon-192.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cinzel+Decorative:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<title>Curriculum · Dragón del Código</title>
+<style>
+:root{--mono:'JetBrains Mono','Courier New',monospace}
+.mod-nav{background:var(--ds);border-bottom:.5px solid var(--bdr);overflow-x:auto;-webkit-overflow-scrolling:touch;position:sticky;top:56px;z-index:59;scrollbar-width:none}
+.mod-nav::-webkit-scrollbar{display:none}
+.mod-nav-inner{display:flex;padding:0 1rem;width:max-content}
+.mod-tab{padding:9px 10px;background:none;border:none;color:var(--dim);font-family:var(--font);font-size:9.5px;letter-spacing:.05em;cursor:pointer;transition:all .2s;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;flex-shrink:0}
+.mod-tab:hover{color:var(--dt)}
+.mod-tab.active{color:var(--gold);border-bottom-color:var(--fire)}
+.mod-tab.read{color:var(--dim)}
+.mod-tab .tab-check{font-size:8px;color:var(--grt);display:none}
+.mod-tab.read .tab-check{display:inline}
+.content{max-width:680px;margin:0 auto;padding:1.5rem 1.25rem 4rem}
+.module{display:none}.module.active{display:block}
+.mod-hero{margin-bottom:2rem}
+.mod-num{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--fire);margin-bottom:6px}
+.mod-title{font-family:'Cinzel Decorative',serif;font-size:20px;color:var(--gold);line-height:1.2;margin-bottom:4px}
+.mod-topic{font-size:10px;color:var(--dim);letter-spacing:.15em;text-transform:uppercase}
+.mod-divider{height:.5px;background:var(--bdr);margin:1.5rem 0}
+h2{font-size:14px;color:var(--gold);margin:2rem 0 .75rem;letter-spacing:.04em;padding-bottom:6px;border-bottom:.5px solid var(--bdr)}
+h3{font-size:12px;color:var(--fire);margin:1.5rem 0 .6rem;letter-spacing:.04em}
+p{font-size:12px;color:var(--dim);line-height:1.8;margin-bottom:.875rem}
+p strong{color:var(--dt)}
+ul,ol{margin:.5rem 0 1rem 1.25rem;color:var(--dim);font-size:12px;line-height:1.8}
+li{margin-bottom:.3rem}
+li strong{color:var(--dt)}
+code{font-family:var(--mono);font-size:11px;background:var(--ds);padding:1px 5px;border-radius:3px;color:#aafa8a}
+pre{background:#060310;border:.5px solid var(--bdr);border-radius:var(--rm);padding:16px;overflow-x:auto;margin:1rem 0;position:relative}
+pre code{font-family:var(--mono);font-size:11.5px;color:#8afa8a;background:transparent;padding:0;line-height:1.7}
+.copy-code{position:absolute;top:8px;right:8px;background:var(--df);border:.5px solid var(--bdr);border-radius:5px;color:var(--dim);font-family:var(--font);font-size:9px;letter-spacing:.06em;text-transform:uppercase;padding:3px 8px;cursor:pointer;transition:all .2s}
+.copy-code:hover{border-color:var(--fire);color:var(--dt)}
+.senior-box{background:#1c1200;border:.5px solid #6a4000;border-left:3px solid var(--gold);border-radius:var(--rm);padding:14px 16px;margin:1.25rem 0}
+.senior-box::before{content:"🐉  Perspectiva Senior";display:block;font-size:9px;color:var(--gold);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.senior-box p{color:var(--dt);font-size:11.5px;margin-bottom:.5rem}
+.senior-box p:last-child{margin-bottom:0}
+.warning-box{background:#1a0a0a;border:.5px solid #6a2020;border-left:3px solid #e07070;border-radius:var(--rm);padding:14px 16px;margin:1.25rem 0}
+.warning-box::before{content:"⚠  Error clásico de Junior";display:block;font-size:9px;color:#e07070;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.warning-box p{color:var(--dim);font-size:11.5px;margin-bottom:.5rem}
+.warning-box p:last-child{margin-bottom:0}
+.key-box{background:var(--df);border:.5px solid var(--bdr);border-radius:var(--rm);padding:14px 16px;margin:1.25rem 0}
+.key-box::before{content:"🔑  Puntos Clave";display:block;font-size:9px;color:var(--dim);letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+.key-box ul{margin:.25rem 0 0 1rem;color:var(--dim);font-size:11.5px}
+.key-box li{margin-bottom:.5rem}
+.concept-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:1rem 0}
+.concept-card{background:var(--ds);border:.5px solid var(--bdr);border-radius:var(--rm);padding:10px 12px}
+.concept-card .cc-title{font-size:10px;color:var(--gold);font-weight:600;margin-bottom:4px;letter-spacing:.04em}
+.concept-card .cc-body{font-size:10.5px;color:var(--dim);line-height:1.6}
+@media(max-width:480px){.concept-grid{grid-template-columns:1fr}}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--db);border-top:.5px solid var(--bdr);padding:.75rem 1.25rem;z-index:58}
+.bottom-nav-inner{max-width:680px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;gap:10px}
+.nav-btn{padding:7px 14px;background:var(--df);border:.5px solid var(--bdr);border-radius:var(--rm);color:var(--dim);font-family:var(--font);font-size:10px;letter-spacing:.08em;cursor:pointer;transition:all .2s;text-transform:uppercase}
+.nav-btn:hover:not(:disabled){border-color:var(--fire);color:var(--dt)}
+.nav-btn:disabled{opacity:.3;cursor:default}
+.nav-center{font-size:10px;color:var(--dim);text-align:center}
+.nav-center b{color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="back-btn" href="index.html">← Hub</a>
+    <div class="hdr-c">
+      <div class="t1">Curriculum</div>
+      <div class="t2">20 Módulos · Referencia permanente</div>
+    </div>
+    <div class="hdr-right" id="hdr-progress">0/20</div>
+  </div>
+</header>
+
+<nav class="mod-nav">
+  <div class="mod-nav-inner" id="mod-nav-inner"></div>
+</nav>
+
+<main class="content" id="content">
+
+<!-- ════════════════════ M0 ════════════════════ -->
+<section class="module active" id="m0">
+<div class="mod-hero">
+  <div class="mod-num">Módulo 0</div>
+  <div class="mod-title">Fundamentos del Cómputo</div>
+  <div class="mod-topic">Pensamiento Computacional</div>
+</div>
+
+<h2>Cómo piensa una computadora</h2>
+<p>Una computadora no "entiende" nada. Ejecuta instrucciones sobre datos. Todo lo que ves en pantalla — texto, imágenes, videos — son números representados en binario (0s y 1s). Entender esto cambia cómo piensas sobre el software.</p>
+<p>La jerarquía de memoria es la primera cosa que un senior tiene presente: <strong>registros → caché → RAM → disco duro → red</strong>. Cada nivel es más lento y más barato. Tu trabajo como programador es mover los datos correctos al nivel correcto en el momento correcto.</p>
+
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">RAM (Memoria)</div><div class="cc-body">Rápida, volátil. Almacena lo que el programa usa ahora. Se borra al apagar. Cara por GB.</div></div>
+  <div class="concept-card"><div class="cc-title">Almacenamiento (Disco)</div><div class="cc-body">Lento, persistente. Guarda datos entre sesiones. Más barato por GB. SSD &gt; HDD en velocidad.</div></div>
+  <div class="concept-card"><div class="cc-title">Caché</div><div class="cc-body">Memoria ultra-rápida dentro del procesador. Guarda datos usados recientemente. Mínima.</div></div>
+  <div class="concept-card"><div class="cc-title">CPU</div><div class="cc-body">Ejecuta instrucciones. Cores = capacidad de paralelismo. GHz = velocidad por ciclo.</div></div>
+</div>
+
+<h2>Los tres paradigmas algorítmicos</h2>
+<p>Todo algoritmo — sin importar qué tan complejo sea — se construye con solo tres bloques:</p>
+<ul>
+  <li><strong>Secuencia:</strong> Instrucciones ejecutadas en orden, una tras otra.</li>
+  <li><strong>Selección:</strong> Una decisión basada en una condición (if/else). El programa toma caminos distintos.</li>
+  <li><strong>Repetición:</strong> Un bloque que se ejecuta múltiples veces (bucles). El poder de la computación.</li>
+</ul>
+
+<pre><code># Secuencia
+nombre = "Tony"
+saludo = "Hola, " + nombre
+print(saludo)  # Hola, Tony
+
+# Selección
+edad = 20
+if edad >= 18:
+    print("Mayor de edad")
+else:
+    print("Menor de edad")
+
+# Repetición
+for i in range(5):
+    print(f"Iteración {i}")  # Ejecuta 5 veces</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Pseudocódigo: Pensar antes de escribir</h2>
+<p>Los seniors no empiezan a escribir código inmediatamente. Primero diseñan la solución en pseudocódigo — lenguaje natural estructurado que describe la lógica sin preocuparse por la sintaxis.</p>
+<pre><code># Pseudocódigo para buscar el mayor número en una lista
+FUNCIÓN encontrar_mayor(lista):
+    SI la lista está vacía:
+        RETORNAR error "lista vacía"
+    
+    mayor = primer elemento de la lista
+    
+    PARA cada número en la lista:
+        SI número > mayor:
+            mayor = número
+    
+    RETORNAR mayor</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<div class="senior-box">
+  <p>Un senior ve el código como la última fase, no la primera. Antes de escribir una línea, se pregunta: ¿qué problema estoy resolviendo exactamente? ¿Cuáles son los casos edge? ¿Qué pasa si la entrada está vacía o es inválida? Escribir pseudocódigo primero evita reescribir código real después.</p>
+</div>
+
+<div class="warning-box">
+  <p>El error más común es confundir RAM con almacenamiento. Si guardas algo en una variable, existe solo mientras el programa corre. Si apagas el ordenador, desaparece. Para que persista, debes escribirlo en un archivo o base de datos.</p>
+</div>
+
+<div class="key-box"><ul>
+  <li>RAM = temporal, rápida. Disco = permanente, lenta. Nunca confundirlas.</li>
+  <li>Todo algoritmo = secuencia + selección + repetición. Nada más.</li>
+  <li>Diseña antes de codificar. El pseudocódigo no tiene sintaxis incorrecta.</li>
+  <li>La computadora ejecuta instrucciones exactamente como se las das. No interpreta intención.</li>
+</ul></div>
+</section>
+
+<!-- ════════════════════ M1 ════════════════════ -->
+<section class="module" id="m1">
+<div class="mod-hero">
+  <div class="mod-num">Módulo 1</div>
+  <div class="mod-title">Python Básico</div>
+  <div class="mod-topic">Lenguaje — Python</div>
+</div>
+
+<h2>Todo en Python es un objeto</h2>
+<p>En Python, las variables no <em>contienen</em> valores — son <strong>etiquetas que apuntan a objetos en memoria</strong>. Esta distinción parece sutil pero explica comportamientos que confunden a principiantes durante meses.</p>
+<pre><code>a = [1, 2, 3]
+b = a          # b apunta al MISMO objeto que a
+b.append(4)
+print(a)       # [1, 2, 3, 4] — a también cambió
+
+# Para copiar realmente:
+c = a.copy()   # c es un objeto NUEVO
+c.append(5)
+print(a)       # [1, 2, 3, 4] — a no cambió</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Tipos de datos fundamentales</h2>
+<pre><code># Enteros — precisión arbitraria (sin overflow)
+edad = 25
+year = 2024
+
+# Flotantes — representación aproximada (IEEE 754)
+precio = 19.99
+print(0.1 + 0.2)  # 0.30000000000000004 — no es un bug, es IEEE 754
+
+# Strings — inmutables, unicode por defecto
+nombre = "Tony"
+frase = f"Hola, {nombre}. Tienes {edad} años."  # f-strings: siempre usa estos
+
+# Booleanos — True/False (mayúscula)
+activo = True
+es_mayor = edad >= 18
+
+# None — ausencia de valor (no es 0, no es False)
+resultado = None  # "aún no hay resultado"</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Convenciones que separan el código profesional</h2>
+<pre><code># MAL — nombres sin significado
+x = 25
+lst = ["Tony", "Ana", "Luis"]
+def f(a, b):
+    return a + b
+
+# BIEN — nombres que documentan la intención
+edad_usuario = 25
+nombres_activos = ["Tony", "Ana", "Luis"]
+def calcular_total(precio: float, cantidad: int) -> float:
+    return precio * cantidad
+
+# Type hints: no son obligatorios, pero son profesionales
+def buscar_usuario(email: str) -> dict | None:
+    ...  # implementación</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Operaciones que todo programador debe dominar</h2>
+<pre><code># String methods más útiles
+texto = "  Hola Mundo  "
+texto.strip()         # "Hola Mundo" — elimina espacios
+texto.lower()         # "  hola mundo  "
+texto.split(" ")      # lista de palabras
+"Python".startswith("Py")  # True
+",".join(["a", "b", "c"])  # "a,b,c"
+
+# Conversiones de tipo
+int("42")     # 42
+float("3.14") # 3.14
+str(100)      # "100"
+bool(0)       # False  — 0, "", [], {}, None son falsy
+bool("hola")  # True
+
+# Verificar tipos (úsalo con moderación)
+isinstance(42, int)      # True
+isinstance("hola", str)  # True</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<div class="senior-box">
+  <p>Un senior siempre usa f-strings, nunca concatenación con +. Un senior pone type hints en funciones públicas — no porque Python los enforce, sino porque son documentación viva. Y un senior nunca usa nombres como <code>data</code>, <code>info</code>, <code>temp</code> o <code>x</code> en código de producción.</p>
+</div>
+
+<div class="warning-box">
+  <p><strong>El flotante trampa:</strong> Nunca uses flotantes para dinero. <code>0.1 + 0.2 != 0.3</code> en casi todos los lenguajes. Usa el módulo <code>decimal</code> de Python para cálculos financieros: <code>from decimal import Decimal; Decimal("0.1") + Decimal("0.2")</code> da <code>0.3</code> exacto.</p>
+</div>
+
+<div class="key-box"><ul>
+  <li>Variables son etiquetas, no cajas. Asignar <code>b = a</code> no copia el objeto.</li>
+  <li>Usa f-strings siempre: <code>f"Hola {nombre}"</code>, no <code>"Hola " + nombre</code>.</li>
+  <li>Pon type hints en tus funciones desde el principio. Es gratis y documenta el contrato.</li>
+  <li>Nombres descriptivos &gt; comentarios explicando nombres malos.</li>
+  <li>Nunca float para dinero. Usa <code>Decimal</code> o enteros en centavos.</li>
+</ul></div>
+</section>
+
+<!-- ════════════════════ M2 ════════════════════ -->
+<section class="module" id="m2">
+<div class="mod-hero">
+  <div class="mod-num">Módulo 2</div>
+  <div class="mod-title">Control de Flujo</div>
+  <div class="mod-topic">Lenguaje — Python</div>
+</div>
+
+<h2>Condicionales: el arte de las guardias</h2>
+<p>Los seniors escriben condicionales de forma diferente a los juniors. El patrón más importante es la <strong>guard clause</strong> (cláusula guarda): retornar pronto para eliminar anidamiento.</p>
+<pre><code># Junior — anidamiento profundo (difícil de leer)
+def procesar_pedido(pedido):
+    if pedido is not None:
+        if pedido["activo"]:
+            if pedido["cantidad"] > 0:
+                return pedido["precio"] * pedido["cantidad"]
+
+# Senior — guard clauses (fácil de leer)
+def procesar_pedido(pedido):
+    if pedido is None:
+        raise ValueError("Pedido no puede ser None")
+    if not pedido["activo"]:
+        return 0
+    if pedido["cantidad"] <= 0:
+        raise ValueError("Cantidad debe ser positiva")
+    
+    return pedido["precio"] * pedido["cantidad"]</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Bucles: más allá del for básico</h2>
+<pre><code>frutas = ["manzana", "pera", "uva"]
+
+# enumerate — siempre que necesites índice Y valor
+for indice, fruta in enumerate(frutas):
+    print(f"{indice}: {fruta}")
+
+# zip — iterar dos listas en paralelo
+precios = [1.5, 2.0, 3.5]
+for fruta, precio in zip(frutas, precios):
+    print(f"{fruta}: ${precio}")
+
+# List comprehension — más pythónico y rápido que un for
+cuadrados = [x**2 for x in range(10)]
+pares = [x for x in range(20) if x % 2 == 0]
+mayusculas = [s.upper() for s in frutas]
+
+# Dict comprehension
+precios_dict = {fruta: precio for fruta, precio in zip(frutas, precios)}
+# {"manzana": 1.5, "pera": 2.0, "uva": 3.5}</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Herramientas funcionales: any, all, filter, map</h2>
+<pre><code>numeros = [2, 4, 6, 7, 8]
+
+# any — ¿alguno cumple la condición?
+any(n % 2 != 0 for n in numeros)  # True (7 es impar)
+
+# all — ¿todos cumplen la condición?
+all(n > 0 for n in numeros)       # True
+
+# Evitar bucles explícitos cuando no son necesarios
+# En vez de:
+impares = []
+for n in numeros:
+    if n % 2 != 0:
+        impares.append(n)
+
+# Usar:
+impares = [n for n in numeros if n % 2 != 0]  # [7]
+
+# match-case (Python 3.10+) — mejor que cadenas if/elif largas
+def describir_codigo(status_code: int) -> str:
+    match status_code:
+        case 200: return "OK"
+        case 404: return "No encontrado"
+        case 500: return "Error del servidor"
+        case _:   return f"Código desconocido: {status_code}"</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<div class="senior-box">
+  <p>La regla del senior: <strong>si tu función tiene más de 2 niveles de anidamiento, algo está mal</strong>. Usa guard clauses, extrae lógica a subfunciones, o reconsidera el diseño. El código que un senior escribe casi siempre "cabe en la pantalla" sin scroll horizontal.</p>
+</div>
+
+<div class="warning-box">
+  <p><strong>Nunca modifiques una lista mientras la recorres con for.</strong> Python no lanzará error, pero el comportamiento es impredecible. Si necesitas filtrar, crea una nueva lista: <code>activos = [u for u in usuarios if u["activo"]]</code>.</p>
+</div>
+
+<div class="key-box"><ul>
+  <li>Guard clauses primero: valida, rechaza, regresa pronto. La lógica feliz al final.</li>
+  <li>Usa <code>enumerate()</code> en lugar de <code>range(len(lista))</code> siempre.</li>
+  <li>List comprehensions para transformar/filtrar datos. Bucles for para efectos secundarios.</li>
+  <li>Dos niveles de anidamiento máximo. Más que eso: extrae una función.</li>
+</ul></div>
+</section>
+
+<!-- ════════════════════ M3 ════════════════════ -->
+<section class="module" id="m3">
+<div class="mod-hero">
+  <div class="mod-num">Módulo 3</div>
+  <div class="mod-title">Funciones</div>
+  <div class="mod-topic">Lenguaje — Python</div>
+</div>
+
+<h2>El principio de una sola responsabilidad</h2>
+<p>Una función debe hacer <strong>exactamente una cosa</strong>. Si no puedes describir qué hace con una oración sin usar "y", la función hace demasiado. Este principio es el origen de casi todo el buen diseño de software.</p>
+<pre><code># MAL — función que hace múltiples cosas
+def procesar_usuario(nombre, email, datos_compra):
+    if "@" not in email:
+        return False
+    bd.guardar({"nombre": nombre, "email": email})
+    total = sum(item["precio"] for item in datos_compra)
+    enviar_email(email, f"Total: {total}")
+    return True
+
+# BIEN — cada función hace una cosa
+def es_email_valido(email: str) -> bool:
+    return "@" in email and "." in email.split("@")[1]
+
+def calcular_total(items: list[dict]) -> float:
+    return sum(item["precio"] for item in items)
+
+def crear_usuario(nombre: str, email: str) -> dict:
+    if not es_email_valido(email):
+        raise ValueError(f"Email inválido: {email}")
+    return {"nombre": nombre, "email": email}</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Argumentos: la trampa del argumento mutable</h2>
+<pre><code># EL BUG MÁS CLÁSICO DE PYTHON
+def agregar_item(item, lista=[]):
+    lista.append(item)
+    return lista
+
+agregar_item("manzana")  # ["manzana"]
+agregar_item("pera")     # ["manzana", "pera"] ← BUG
+
+# CORRECTO
+def agregar_item(item, lista=None):
+    if lista is None:
+        lista = []
+    lista.append(item)
+    return lista
+
+# *args y **kwargs para funciones flexibles
+def registrar(*mensajes, nivel="INFO", **metadata):
+    for msg in mensajes:
+        print(f"[{nivel}] {msg} | {metadata}")
+
+registrar("Inicio", "Conectando", nivel="DEBUG", servicio="auth", version=2)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Funciones puras vs efectos secundarios</h2>
+<pre><code># Función PURA — mismo input, siempre mismo output, sin efectos externos
+def calcular_precio_con_impuesto(precio: float, tasa: float) -> float:
+    return precio * (1 + tasa)
+
+# Función CON EFECTOS SECUNDARIOS — modifica estado externo
+contador_global = 0
+def incrementar():
+    global contador_global
+    contador_global += 1
+
+# Los seniors prefieren funciones puras cuando es posible.
+# Son predecibles, testeables y reutilizables.</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<h2>Decoradores: funciones que envuelven funciones</h2>
+<pre><code>import time
+from functools import wraps
+
+def medir_tiempo(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        inicio = time.time()
+        resultado = func(*args, **kwargs)
+        duracion = time.time() - inicio
+        print(f"{func.__name__} tardó {duracion:.3f}s")
+        return resultado
+    return wrapper
+
+@medir_tiempo
+def buscar_en_bd(query: str):
+    time.sleep(0.1)
+    return {"resultados": []}
+
+buscar_en_bd("SELECT * FROM usuarios")</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+
+<div class="senior-box">
+  <p>El test de una buena función: ¿puedes escribir un test unitario para ella sin crear una base de datos, un servidor, o un archivo? Si la respuesta es no, la función está haciendo demasiado o mezclando capas.</p>
+</div>
+
+<div class="warning-box">
+  <p>Nunca uses <code>global</code>. Si una función necesita modificar estado externo, ese estado debería ser un parámetro o la función debería ser un método de una clase.</p>
+</div>
+
+<div class="key-box"><ul>
+  <li>Una función = una responsabilidad. Si usas "y", divídela.</li>
+  <li>Nunca <code>def f(arg=[]):</code>. Usa <code>None</code> como default para mutables.</li>
+  <li>Prefiere funciones puras. Los efectos secundarios son necesarios pero deben estar controlados.</li>
+  <li>Type hints + docstring = documentación que no se desactualiza.</li>
+</ul></div>
+</section>
+
+<!-- ════════════════════ M4-M19 ════════════════════ -->
+<!-- (Content preserved from original - same structure and educational content) -->
+
+<section class="module" id="m4">
+<div class="mod-hero"><div class="mod-num">Módulo 4</div><div class="mod-title">Estructuras de Datos</div><div class="mod-topic">Lenguaje — Python</div></div>
+<h2>La pregunta que define la estructura correcta</h2>
+<p>Antes de elegir una estructura de datos, un senior se pregunta: <strong>¿cuál es la operación más frecuente?</strong> Buscar, insertar, acceder por índice, verificar pertenencia.</p>
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">Lista []</div><div class="cc-body">Acceso por índice O(1). Búsqueda O(n). Append O(1) amortizado. Orden importa, duplicados OK.</div></div>
+  <div class="concept-card"><div class="cc-title">Diccionario {}</div><div class="cc-body">Búsqueda por clave O(1). Inserción O(1). Clave única. Orden preservado (Python 3.7+).</div></div>
+  <div class="concept-card"><div class="cc-title">Set {}</div><div class="cc-body">Verificar pertenencia O(1). Sin duplicados. Sin orden. Ideal para unicidad.</div></div>
+  <div class="concept-card"><div class="cc-title">Tupla ()</div><div class="cc-body">Inmutable. Más rápida que lista. Usa para datos que no deben cambiar. Hasheable.</div></div>
+</div>
+<pre><code>from collections import defaultdict, Counter
+from typing import NamedTuple
+
+emails_bloqueados = {"spam@evil.com", "bot@fake.org"}
+if "spam@evil.com" in emails_bloqueados:
+    print("Bloqueado")
+
+ventas_por_region = defaultdict(list)
+ventas_por_region["norte"].append(1500)
+
+palabras = ["python", "es", "genial", "python", "es"]
+conteo = Counter(palabras)
+conteo.most_common(2)
+
+class Coordenada(NamedTuple):
+    latitud: float
+    longitud: float
+    nombre: str = "Sin nombre"
+
+punto = Coordenada(4.710989, -74.072090, "Bogotá")
+print(punto.nombre)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>En producción, la estructura de datos incorrecta puede convertir una operación que tarda milisegundos en una que tarda minutos.</p></div>
+<div class="key-box"><ul>
+  <li>Verificar si algo existe → usa <code>set</code> o <code>dict</code>, nunca <code>list</code>.</li>
+  <li>Agrupar por clave → <code>defaultdict</code>. Contar → <code>Counter</code>.</li>
+  <li>Datos inmutables con nombres → <code>NamedTuple</code> o <code>dataclass</code>.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m5">
+<div class="mod-hero"><div class="mod-num">Módulo 5</div><div class="mod-title">Programación Orientada a Objetos</div><div class="mod-topic">Paradigmas</div></div>
+<h2>OOP no es sobre clases, es sobre responsabilidades</h2>
+<p>El error de los juniors es pensar que POO = crear clases. La POO real es sobre <strong>modelar responsabilidades y relaciones</strong> en el dominio del problema.</p>
+<pre><code>from dataclasses import dataclass, field
+from datetime import datetime
+
+@dataclass
+class Producto:
+    id: int
+    nombre: str
+    precio: float
+    stock: int = 0
+    def tiene_stock(self) -> bool:
+        return self.stock > 0
+    def aplicar_descuento(self, porcentaje: float) -> float:
+        if not 0 <= porcentaje <= 100:
+            raise ValueError("Porcentaje inválido")
+        return self.precio * (1 - porcentaje / 100)
+
+@dataclass
+class CarritoDeCompras:
+    usuario_id: int
+    items: list = field(default_factory=list)
+    creado_en: datetime = field(default_factory=datetime.now)
+    def agregar(self, producto: Producto, cantidad: int = 1) -> None:
+        if not producto.tiene_stock():
+            raise ValueError(f"{producto.nombre} no tiene stock")
+        self.items.append({"producto": producto, "cantidad": cantidad})
+    @property
+    def total(self) -> float:
+        return sum(item["producto"].precio * item["cantidad"] for item in self.items)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<h2>Herencia vs Composición</h2>
+<pre><code>class Motor:
+    def encender(self) -> str:
+        return "Motor encendido"
+class Auto:
+    def __init__(self):
+        self.motor = Motor()
+    def arrancar(self) -> str:
+        return self.motor.encender()
+# Regla: prefiere composición sobre herencia.</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>La pregunta que hace un senior antes de crear una clase: "¿qué datos van siempre juntos y qué comportamientos los modifican?"</p></div>
+<div class="key-box"><ul>
+  <li>Herencia = "ES UN". Composición = "TIENE UN". Prefiere composición.</li>
+  <li>Usa <code>@property</code> para exponer atributos con control.</li>
+  <li><code>@dataclass</code> para clases que principalmente guardan datos.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m6">
+<div class="mod-hero"><div class="mod-num">Módulo 6</div><div class="mod-title">Algoritmos y Complejidad</div><div class="mod-topic">CS Fundamentals</div></div>
+<h2>Big-O: el lenguaje universal del rendimiento</h2>
+<p>Big-O describe cómo crece el tiempo de ejecución según crece el input. Mide <strong>escalabilidad</strong>, no segundos.</p>
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">O(1) — Constante</div><div class="cc-body">Acceso a dict, list por índice.</div></div>
+  <div class="concept-card"><div class="cc-title">O(log n) — Logarítmico</div><div class="cc-body">Búsqueda binaria. 1M elementos → ~20 ops.</div></div>
+  <div class="concept-card"><div class="cc-title">O(n) — Lineal</div><div class="cc-body">Un loop simple. Búsqueda en lista.</div></div>
+  <div class="concept-card"><div class="cc-title">O(n²) — Cuadrático</div><div class="cc-body">Loop dentro de loop. Peligroso.</div></div>
+</div>
+<pre><code>import bisect
+usuarios = {"tony": {"edad": 25}}  # O(1)
+lista_ordenada = [1, 3, 5, 7, 9, 11, 13, 15]
+indice = bisect.bisect_left(lista_ordenada, 7)  # O(log n)
+
+def tiene_duplicados_lento(lista):  # O(n²)
+    for i in range(len(lista)):
+        for j in range(i + 1, len(lista)):
+            if lista[i] == lista[j]:
+                return True
+    return False
+
+def tiene_duplicados_rapido(lista):  # O(n)
+    return len(lista) != len(set(lista))</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>Cuando un senior ve un bucle dentro de otro bucle en producción, se detiene: "¿puede ser O(n) en lugar de O(n²)?"</p></div>
+<div class="key-box"><ul>
+  <li>Bucle dentro de bucle = O(n²). Siempre busca reducirlo con un dict/set.</li>
+  <li>Usa <code>sorted()</code> de Python — Timsort es O(n log n).</li>
+  <li>Búsqueda en lista = O(n). En dict/set = O(1).</li>
+</ul></div>
+</section>
+
+<section class="module" id="m7">
+<div class="mod-hero"><div class="mod-num">Módulo 7</div><div class="mod-title">Git y Control de Versiones</div><div class="mod-topic">Herramientas</div></div>
+<h2>Git no es un backup — es comunicación</h2>
+<p>Los seniors usan Git como <strong>comunicación con el futuro</strong>: cada commit es un mensaje explicando qué cambió y por qué.</p>
+<pre><code>git checkout -b feature/autenticacion-jwt
+git add src/auth.py tests/test_auth.py
+git commit -m "feat(auth): añadir validación de tokens JWT
+
+- Implementa verificación de firma RS256
+- Añade expiración configurable vía env var JWT_EXPIRY
+- Tests cubren token válido, expirado y firma inválida
+
+Closes #142"
+git push origin feature/autenticacion-jwt</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<h2>Commits convencionales</h2>
+<pre><code>feat(auth): añadir login con Google OAuth
+fix(pago): corregir cálculo de impuesto
+docs(api): actualizar documentación
+test(carrito): añadir tests para descuentos
+refactor(usuario): extraer validación a capa de dominio
+chore(deps): actualizar Django a 4.2.1</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="key-box"><ul>
+  <li>Una rama por feature o fix. <code>main</code> siempre funciona.</li>
+  <li>Nunca <code>git add .</code> sin revisar <code>git diff</code> primero.</li>
+  <li>Commit messages: tipo(scope): descripción. Explica el por qué.</li>
+  <li>El <code>.env</code> nunca va al repositorio.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m8">
+<div class="mod-hero"><div class="mod-num">Módulo 8</div><div class="mod-title">Bases de Datos y SQL</div><div class="mod-topic">Datos</div></div>
+<h2>El diseño es más importante que las consultas</h2>
+<p>Un senior sabe que el esquema de base de datos es el contrato más difícil de cambiar en una aplicación.</p>
+<pre><code>CREATE TABLE clientes (
+    id INTEGER PRIMARY KEY,
+    nombre TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE,
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE productos (
+    id INTEGER PRIMARY KEY,
+    nombre TEXT NOT NULL,
+    precio_actual REAL NOT NULL,
+    activo BOOLEAN DEFAULT TRUE
+);
+CREATE TABLE pedidos (
+    id INTEGER PRIMARY KEY,
+    cliente_id INTEGER REFERENCES clientes(id),
+    creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+CREATE TABLE pedidos_items (
+    pedido_id INTEGER REFERENCES pedidos(id),
+    producto_id INTEGER REFERENCES productos(id),
+    cantidad INTEGER NOT NULL,
+    precio_en_compra REAL NOT NULL,
+    PRIMARY KEY (pedido_id, producto_id)
+);</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<h2>El problema N+1</h2>
+<pre><code># BUG — N+1 queries
+pedidos = db.query("SELECT * FROM pedidos")
+for pedido in pedidos:
+    cliente = db.query(f"SELECT * FROM clientes WHERE id={pedido.cliente_id}")
+
+# CORRECTO — JOIN
+pedidos_con_clientes = db.query("""
+    SELECT p.*, c.nombre, c.email
+    FROM pedidos p
+    JOIN clientes c ON p.cliente_id = c.id
+""")</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>ACID garantiza que tu base de datos no quede en estado corrupto. Las transacciones son obligatorias para operaciones de múltiples pasos.</p></div>
+<div class="key-box"><ul>
+  <li>Normaliza el esquema. Datos duplicados crean inconsistencias.</li>
+  <li>Guarda el precio histórico en los ítems de pedido.</li>
+  <li>El N+1 destruye el rendimiento. Siempre usa JOINs.</li>
+  <li>Índices en toda columna usada en WHERE o JOIN.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m9">
+<div class="mod-hero"><div class="mod-num">Módulo 9</div><div class="mod-title">APIs REST</div><div class="mod-topic">Web</div></div>
+<h2>HTTP es el contrato. REST es la convención.</h2>
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">GET /recursos</div><div class="cc-body">Listar. Idempotente. Cacheable.</div></div>
+  <div class="concept-card"><div class="cc-title">POST /recursos</div><div class="cc-body">Crear. No idempotente. 201 + Location.</div></div>
+  <div class="concept-card"><div class="cc-title">PUT /recursos/:id</div><div class="cc-body">Reemplazar. Idempotente. 200/204.</div></div>
+  <div class="concept-card"><div class="cc-title">DELETE /recursos/:id</div><div class="cc-body">Eliminar. Idempotente. 204.</div></div>
+</div>
+<pre><code># MAL
+GET  /getUsuarios
+POST /crearUsuario
+POST /eliminarUsuario?id=5
+
+# BIEN
+GET    /usuarios
+POST   /usuarios
+GET    /usuarios/5
+PUT    /usuarios/5
+DELETE /usuarios/5
+GET    /usuarios/5/pedidos
+
+# Códigos de estado
+200 OK | 201 Created | 204 No Content | 400 Bad Request
+401 Unauthorized | 403 Forbidden | 404 Not Found
+422 Unprocessable | 429 Too Many Req | 500 Server Error</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>Una API bien diseñada es un contrato que no deberías romper. Versiona desde el inicio: <code>/api/v1/</code>.</p></div>
+<div class="key-box"><ul>
+  <li>URLs = sustantivos. Métodos HTTP = verbos.</li>
+  <li>JWT en <code>Authorization: Bearer TOKEN</code>.</li>
+  <li>Rate limiting desde el día uno.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m10">
+<div class="mod-hero"><div class="mod-num">Módulo 10</div><div class="mod-title">Desarrollo Web Frontend</div><div class="mod-topic">Frontend</div></div>
+<h2>El navegador como plataforma</h2>
+<p>HTML (estructura), CSS (presentación), JavaScript (comportamiento). Separar responsabilidades.</p>
+<pre><code>/* CSS moderno */
+.contenedor {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+.grid-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 1.5rem;
+}
+:root {
+  --color-primario: #1a73e8;
+  --espaciado-base: 1rem;
+}</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<pre><code>// JavaScript moderno
+async function obtenerUsuarios() {
+  try {
+    const respuesta = await fetch('/api/v1/usuarios', {
+      headers: { 'Authorization': `Bearer ${getToken()}` }
+    });
+    if (!respuesta.ok) {
+      throw new Error(`HTTP ${respuesta.status}`);
+    }
+    return await respuesta.json();
+  } catch (error) {
+    console.error('Error:', error);
+    mostrarError('No se pudieron cargar los usuarios');
+    return [];
+  }
+}
+
+// Event delegation
+document.getElementById('lista-usuarios').addEventListener('click', (e) => {
+  const boton = e.target.closest('[data-action="eliminar"]');
+  if (boton) eliminarUsuario(boton.dataset.userId);
+});</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>Un senior siempre maneja los errores del fetch. Verifica <code>response.ok</code> explícitamente.</p></div>
+<div class="key-box"><ul>
+  <li>HTML = estructura, CSS = presentación, JS = comportamiento.</li>
+  <li>Flexbox para 1D, Grid para 2D.</li>
+  <li>Verifica <code>response.ok</code> después de fetch.</li>
+  <li>Event delegation: un listener en el padre.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m11">
+<div class="mod-hero"><div class="mod-num">Módulo 11</div><div class="mod-title">Testing y QA</div><div class="mod-topic">Calidad</div></div>
+<h2>Los tests son la red de seguridad para refactorizar</h2>
+<pre><code>import pytest
+
+def calcular_precio_final(precio: float, descuento_pct: float, tiene_membresia: bool) -> float:
+    if precio <= 0:
+        raise ValueError("El precio debe ser positivo")
+    if not 0 <= descuento_pct <= 100:
+        raise ValueError("Descuento inválido")
+    precio_con_descuento = precio * (1 - descuento_pct / 100)
+    if tiene_membresia:
+        precio_con_descuento *= 0.9
+    return round(precio_con_descuento, 2)
+
+class TestCalcularPrecioFinal:
+    def test_sin_descuento(self):
+        assert calcular_precio_final(100, 0, False) == 100.0
+    def test_descuento_50(self):
+        assert calcular_precio_final(100, 50, False) == 50.0
+    def test_membresia(self):
+        assert calcular_precio_final(100, 0, True) == 90.0
+    def test_precio_negativo(self):
+        with pytest.raises(ValueError, match="debe ser positivo"):
+            calcular_precio_final(-10, 0, False)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>TDD no es sobre escribir tests antes del código — es sobre diseñar la API antes de implementarla.</p></div>
+<div class="key-box"><ul>
+  <li>Estructura AAA: Arrange, Act, Assert.</li>
+  <li>Testea comportamiento, no implementación.</li>
+  <li>Cubre casos edge, no solo el happy path.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m12">
+<div class="mod-hero"><div class="mod-num">Módulo 12</div><div class="mod-title">Arquitectura de Software</div><div class="mod-topic">Diseño</div></div>
+<h2>SOLID: los cinco principios</h2>
+<pre><code># S — Single Responsibility
+class GeneradorReporte:
+    def generar(self, datos): ...
+class ExportadorPDF:
+    def exportar(self, reporte): ...
+
+# O — Open/Closed
+from abc import ABC, abstractmethod
+class Notificador(ABC):
+    @abstractmethod
+    def enviar(self, mensaje: str, destinatario: str): ...
+class NotificadorEmail(Notificador):
+    def enviar(self, mensaje, destinatario):
+        print(f"Email: {mensaje} a {destinatario}")
+
+# D — Dependency Inversion
+class ServicioUsuario:
+    def __init__(self, notificador: Notificador):
+        self.notificador = notificador
+    def registrar(self, email: str):
+        self.notificador.enviar("Bienvenido", email)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="key-box"><ul>
+  <li>Single Responsibility: una clase, una razón para cambiar.</li>
+  <li>Dependency Injection en el constructor.</li>
+  <li>Separa capas: UI, lógica de negocio, datos.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m13">
+<div class="mod-hero"><div class="mod-num">Módulo 13</div><div class="mod-title">Seguridad Informática</div><div class="mod-topic">Seguridad</div></div>
+<h2>La seguridad no es una feature — es una actitud</h2>
+<pre><code>from argon2 import PasswordHasher
+ph = PasswordHasher()
+
+hash_seguro = ph.hash(password)  # Argon2: salt automático
+
+# NUNCA:
+query = f"SELECT * FROM usuarios WHERE email = '{email}'"
+# SIEMPRE:
+cursor.execute("SELECT * FROM usuarios WHERE email = ?", (email,))
+
+# Secretos en variables de entorno
+import os
+DATABASE_URL = os.environ["DATABASE_URL"]</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>Todo input del usuario es malicioso por defecto. Valida, sanitiza y escapa todo.</p></div>
+<div class="key-box"><ul>
+  <li>Contraseñas: Argon2 o bcrypt. Nunca MD5/SHA1.</li>
+  <li>SQL Injection: parámetros preparados siempre.</li>
+  <li>Secretos en variables de entorno.</li>
+  <li>HTTPS siempre en producción.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m14">
+<div class="mod-hero"><div class="mod-num">Módulo 14</div><div class="mod-title">DevOps y CI/CD</div><div class="mod-topic">Operaciones</div></div>
+<h2>Si no está automatizado, no es confiable</h2>
+<pre><code>FROM python:3.12-slim
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+COPY . .
+RUN useradd -m appuser && chown -R appuser /app
+USER appuser
+EXPOSE 8000
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<pre><code># .github/workflows/ci.yml
+name: CI/CD Pipeline
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.12' }
+      - run: pip install -r requirements.txt
+      - run: pytest --cov=src tests/
+      - run: ruff check .
+      - run: mypy src/</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="key-box"><ul>
+  <li>Docker = entornos reproducibles.</li>
+  <li>CI/CD: cada push ejecuta tests automáticamente.</li>
+  <li>Deploys pequeños y frecuentes son más seguros.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m15">
+<div class="mod-hero"><div class="mod-num">Módulo 15</div><div class="mod-title">Metodologías Ágiles</div><div class="mod-topic">Gestión</div></div>
+<h2>Ágil no es hacer rápido — es aprender rápido</h2>
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">Sprint (2 semanas)</div><div class="cc-body">Unidad de trabajo. Software potencialmente entregable al final.</div></div>
+  <div class="concept-card"><div class="cc-title">User Story</div><div class="cc-body">"Como [usuario], quiero [acción] para [beneficio]".</div></div>
+  <div class="concept-card"><div class="cc-title">Definition of Done</div><div class="cc-body">Código + tests + code review + documentación.</div></div>
+  <div class="concept-card"><div class="cc-title">Retrospectiva</div><div class="cc-body">¿Qué salió bien? ¿Qué mejorar? Sin buscar culpables.</div></div>
+</div>
+<div class="senior-box"><p>Las estimaciones son incertidumbre, no compromisos. Story points miden complejidad relativa.</p></div>
+<div class="key-box"><ul>
+  <li>Backlog priorizado por valor de negocio.</li>
+  <li>Definition of Done incluye tests.</li>
+  <li>No es ausencia de documentación — es documentación que agrega valor.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m16">
+<div class="mod-hero"><div class="mod-num">Módulo 16</div><div class="mod-title">Patrones de Diseño</div><div class="mod-topic">Avanzado</div></div>
+<h2>Patrones = vocabulario compartido</h2>
+<pre><code># SINGLETON
+class ConfiguracionApp:
+    _instancia = None
+    def __new__(cls):
+        if cls._instancia is None:
+            cls._instancia = super().__new__(cls)
+            cls._instancia._config = {}
+        return cls._instancia
+
+# OBSERVER
+class EventBus:
+    def __init__(self):
+        self._listeners: dict[str, list] = {}
+    def suscribir(self, evento: str, callback):
+        self._listeners.setdefault(evento, []).append(callback)
+    def publicar(self, evento: str, datos=None):
+        for callback in self._listeners.get(evento, []):
+            callback(datos)
+
+# STRATEGY
+from abc import ABC, abstractmethod
+class EstrategiaDescuento(ABC):
+    @abstractmethod
+    def calcular(self, precio: float) -> float: ...
+class SinDescuento(EstrategiaDescuento):
+    def calcular(self, precio): return precio
+class DescuentoEstudiante(EstrategiaDescuento):
+    def calcular(self, precio): return precio * 0.8</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>Los patrones son soluciones, no requisitos. No apliques un patrón sin que el problema exista.</p></div>
+<div class="key-box"><ul>
+  <li>Observer: múltiples partes reaccionan sin acoplarse.</li>
+  <li>Strategy: variantes de algoritmo intercambiables.</li>
+  <li>YAGNI: "You Aren't Gonna Need It".</li>
+</ul></div>
+</section>
+
+<section class="module" id="m17">
+<div class="mod-hero"><div class="mod-num">Módulo 17</div><div class="mod-title">Sistemas Distribuidos</div><div class="mod-topic">Avanzado</div></div>
+<h2>En sistemas distribuidos, todo falla</h2>
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">CAP Theorem</div><div class="cc-body">Consistencia, Disponibilidad, Tolerancia a particiones. Elige 2 de 3.</div></div>
+  <div class="concept-card"><div class="cc-title">Consistencia eventual</div><div class="cc-body">Datos consistentes, no inmediatamente. DNS, carritos.</div></div>
+  <div class="concept-card"><div class="cc-title">Circuit Breaker</div><div class="cc-body">Falla rápido en lugar de esperar timeout.</div></div>
+  <div class="concept-card"><div class="cc-title">Message Queue</div><div class="cc-body">Desacopla productores y consumidores.</div></div>
+</div>
+<div class="senior-box"><p>Primera regla: no hagas sistemas distribuidos si no lo necesitas. Monolito primero.</p></div>
+<div class="key-box"><ul>
+  <li>Diseña para el fallo: retries, timeouts, circuit breakers.</li>
+  <li>Idempotencia: N ejecuciones = 1 resultado.</li>
+  <li>Monolito primero, microservicios solo con razón.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m18">
+<div class="mod-hero"><div class="mod-num">Módulo 18</div><div class="mod-title">Cloud y Big Data</div><div class="mod-topic">Cloud</div></div>
+<h2>La nube es infraestructura como código</h2>
+<div class="concept-grid">
+  <div class="concept-card"><div class="cc-title">IaaS (EC2)</div><div class="cc-body">Control total. Tú instalas/configuras todo.</div></div>
+  <div class="concept-card"><div class="cc-title">PaaS (Heroku)</div><div class="cc-body">Plataforma gestiona el servidor.</div></div>
+  <div class="concept-card"><div class="cc-title">SaaS (GitHub)</div><div class="cc-body">Software listo para usar.</div></div>
+  <div class="concept-card"><div class="cc-title">Serverless (Lambda)</div><div class="cc-body">Pagas por ejecución. Escala a cero.</div></div>
+</div>
+<pre><code>import boto3
+s3 = boto3.client('s3')
+s3.upload_file('foto.jpg', 'mi-bucket', 'usuarios/123/foto.jpg')
+url = s3.generate_presigned_url('get_object',
+    Params={'Bucket': 'mi-bucket', 'Key': 'usuarios/123/foto.jpg'},
+    ExpiresIn=3600
+)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="key-box"><ul>
+  <li>Archivos: siempre en object storage (S3).</li>
+  <li>Serverless para workloads event-driven.</li>
+  <li>Infrastructure as Code (Terraform, CloudFormation).</li>
+  <li>Monitoreo desde el día uno.</li>
+</ul></div>
+</section>
+
+<section class="module" id="m19">
+<div class="mod-hero"><div class="mod-num">Módulo 19</div><div class="mod-title">Proyecto Final Integrador</div><div class="mod-topic">Proyecto</div></div>
+<h2>Un proyecto de producción real tiene estructura</h2>
+<pre><code>mi_proyecto/
+├── src/
+│   ├── domain/          # Lógica de negocio pura
+│   ├── infrastructure/  # BD, email, storage
+│   └── api/             # Endpoints, schemas
+├── tests/
+│   ├── unit/
+│   └── integration/
+├── .env.example
+├── .gitignore
+├── docker-compose.yml
+├── Dockerfile
+├── requirements.txt
+└── README.md</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<h2>El README como contrato</h2>
+<pre><code># Nombre del Proyecto
+## ¿Qué hace? (una oración)
+## Instalación rápida (comandos exactos)
+## Variables de entorno requeridas
+## Arquitectura (diagrama o descripción)
+## Decisiones de diseño (por qué X sobre Y)</code><button class="copy-code" onclick="copyPre(this)">copiar</button></pre>
+<div class="senior-box"><p>Checklist senior: tests >80%, secretos en env vars, logging, errores manejados, README funcional, deploy automatizado.</p></div>
+<div class="key-box"><ul>
+  <li>Separa dominio, infraestructura y presentación.</li>
+  <li>Tests primero para el dominio.</li>
+  <li>Deploy manual no es deploy — automatiza todo.</li>
+  <li>Pensar como senior = pensar en el equipo.</li>
+</ul></div>
+</section>
+
+</main>
+
+<nav class="bottom-nav">
+  <div class="bottom-nav-inner">
+    <button class="nav-btn" id="btn-prev" onclick="navMod(-1)" disabled>← Anterior</button>
+    <div>
+      <div class="nav-center">Módulo <b id="mod-cur">0</b> de <b>19</b></div>
+    </div>
+    <button class="nav-btn" id="btn-next" onclick="navMod(1)">Siguiente →</button>
+  </div>
+</nav>
+
+<script src="js/storage.js"></script>
+<script>
+const MOD_DATA = [
+  {id:0,icon:'🧠',name:'Fundamentos'},{id:1,icon:'🐍',name:'Python Básico'},
+  {id:2,icon:'🔀',name:'Control de Flujo'},{id:3,icon:'⚙️',name:'Funciones'},
+  {id:4,icon:'📦',name:'Estructuras'},{id:5,icon:'🏗️',name:'POO'},
+  {id:6,icon:'📊',name:'Algoritmos'},{id:7,icon:'🌿',name:'Git'},
+  {id:8,icon:'🗄️',name:'Bases de Datos'},{id:9,icon:'🔌',name:'APIs REST'},
+  {id:10,icon:'🌐',name:'Web Frontend'},{id:11,icon:'🧪',name:'Testing'},
+  {id:12,icon:'🏛️',name:'Arquitectura'},{id:13,icon:'🔐',name:'Seguridad'},
+  {id:14,icon:'⚡',name:'DevOps'},{id:15,icon:'🏃',name:'Ágiles'},
+  {id:16,icon:'🎨',name:'Patrones'},{id:17,icon:'🌍',name:'Distribuidos'},
+  {id:18,icon:'☁️',name:'Cloud'},{id:19,icon:'🏆',name:'Proyecto Final'}
+];
+
+let curMod = 0;
+let readMods = new Set();
+
+function buildNav() {
+  const nav = document.getElementById('mod-nav-inner');
+  nav.innerHTML = MOD_DATA.map(m => `
+    <button class="mod-tab${m.id===0?' active':''}" id="nt-${m.id}" onclick="goTo(${m.id})">
+      ${m.icon} ${m.name} <span class="tab-check">✓</span>
+    </button>`).join('');
+}
+
+function goTo(id) {
+  document.getElementById(`m${curMod}`).classList.remove('active');
+  document.getElementById(`nt-${curMod}`).classList.remove('active');
+  curMod = id;
+  document.getElementById(`m${id}`).classList.add('active');
+  document.getElementById(`nt-${id}`).classList.add('active');
+  document.getElementById('mod-cur').textContent = id;
+  document.getElementById('btn-prev').disabled = id === 0;
+  document.getElementById('btn-next').disabled = id === 19;
+  readMods.add(id);
+  document.getElementById(`nt-${id}`).classList.add('read');
+  persistRead();
+  updateProgress();
+  const tab = document.getElementById(`nt-${id}`);
+  tab.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function navMod(delta) {
+  const next = curMod + delta;
+  if (next >= 0 && next <= 19) goTo(next);
+}
+
+function updateProgress() {
+  document.getElementById('hdr-progress').textContent = `${readMods.size}/20`;
+}
+
+function copyPre(btn) {
+  const code = btn.previousElementSibling.textContent;
+  navigator.clipboard.writeText(code).catch(() => {});
+  btn.textContent = '✓ copiado';
+  setTimeout(() => btn.textContent = 'copiar', 2000);
+}
+
+async function persistRead() {
+  try { await Storage.set('curriculum-read', JSON.stringify([...readMods])); } catch(e) {}
+}
+
+async function loadRead() {
+  try {
+    const r = await Storage.get('curriculum-read');
+    if (r && r.value) {
+      const ids = JSON.parse(r.value);
+      ids.forEach(id => {
+        readMods.add(id);
+        document.getElementById(`nt-${id}`)?.classList.add('read');
+      });
+      updateProgress();
+    }
+  } catch(e) {}
+}
+
+buildNav();
+loadRead();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>

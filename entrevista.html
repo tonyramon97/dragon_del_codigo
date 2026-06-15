@@ -1,0 +1,568 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Dragón">
+<meta name="theme-color" content="#08040f">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" type="image/svg+xml" href="icons/icon-192.svg">
+<link rel="apple-touch-icon" href="icons/icon-192.svg">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&family=Cinzel+Decorative:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/main.css">
+<title>Entrevista Técnica · Dragón del Código</title>
+<style>
+body{display:flex;flex-direction:column}
+.timer-badge{font-size:13px;font-weight:600;color:var(--fire);font-family:var(--mono);flex-shrink:0;min-width:52px;text-align:right}
+.screen{display:none;flex:1;flex-direction:column}
+.screen.active{display:flex}
+
+/* SETUP */
+.setup-wrap{max-width:540px;margin:0 auto;padding:1.5rem 1.25rem;display:flex;flex-direction:column;gap:16px;width:100%}
+.setup-hero{text-align:center;padding:1rem 0}
+.interviewer-avatar{font-size:48px;margin-bottom:10px}
+.interviewer-name{font-size:16px;color:var(--gold);font-weight:600}
+.interviewer-title{font-size:10px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;margin-top:3px}
+.setup-intro{font-size:11px;color:var(--dim);text-align:center;line-height:1.7;max-width:380px;margin:0 auto}
+.panel{background:var(--db);border:.5px solid var(--bdr);border-radius:var(--r);padding:1.25rem;display:flex;flex-direction:column;gap:10px}
+.phi{font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--dim)}
+.diff-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.diff-btn{padding:10px 6px;background:var(--df);border:.5px solid var(--bdr);border-radius:var(--rm);color:var(--dim);font-family:var(--font);font-size:10px;letter-spacing:.06em;cursor:pointer;transition:all .2s;text-transform:uppercase;text-align:center}
+.diff-btn:hover{border-color:var(--fire);color:var(--dt)}
+.diff-btn.sel{border-color:var(--gold);color:var(--gold);background:#1c1200}
+.diff-name{font-size:11px;font-weight:600;display:block;margin-bottom:2px}
+.diff-desc{font-size:9px;opacity:.7;display:block}
+.mod-check-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.mod-check{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--ds);border:.5px solid var(--bdr);border-radius:var(--rm);cursor:pointer;transition:border-color .2s;font-size:10px;color:var(--dim)}
+.mod-check:hover{border-color:var(--fire)}
+.mod-check input[type=checkbox]{display:none}
+.mod-check.checked{border-color:#5a3a00;color:var(--gold);background:#1c1200}
+.mod-ico{font-size:14px;flex-shrink:0}
+.mod-chk-icon{width:14px;height:14px;border:.5px solid var(--bdr);border-radius:3px;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;margin-left:auto}
+.mod-check.checked .mod-chk-icon{background:var(--gold);border-color:var(--gold);color:#000}
+.type-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
+.type-btn{padding:9px;background:var(--df);border:.5px solid var(--bdr);border-radius:var(--rm);color:var(--dim);font-family:var(--font);font-size:10px;letter-spacing:.04em;cursor:pointer;transition:all .2s;text-align:center;line-height:1.4}
+.type-btn:hover{border-color:var(--fire);color:var(--dt)}
+.type-btn.sel{border-color:var(--gold);color:var(--gold);background:#1c1200}
+.type-ico{font-size:16px;display:block;margin-bottom:3px}
+.start-btn{width:100%;padding:13px;background:var(--df);border:.5px solid var(--fire);border-radius:var(--rm);color:var(--gold);font-family:var(--font);font-size:12px;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.start-btn:hover{background:#1e0f28}
+.start-btn:disabled{opacity:.4;cursor:default}
+.key-warning{background:#1a0a0a;border:.5px solid #6a2020;border-radius:var(--rm);padding:10px 14px;font-size:10px;color:#e07070;text-align:center;line-height:1.6}
+
+/* INTERVIEW */
+.interview-wrap{max-width:640px;margin:0 auto;display:flex;flex-direction:column;height:calc(100vh - 57px);width:100%}
+.interview-status{background:var(--ds);border-bottom:.5px solid var(--bdr);padding:8px 1.25rem;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.status-dot{width:8px;height:8px;border-radius:50%;background:var(--grt);flex-shrink:0;animation:pulse-dot 2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1}50%{opacity:.4}}
+.status-text{font-size:10px;color:var(--dim);flex:1}
+.status-text b{color:var(--dt)}
+.q-count{font-size:10px;color:var(--dim)}
+.q-count b{color:var(--gold)}
+.chat-area{flex:1;overflow-y:auto;padding:1rem 1.25rem;display:flex;flex-direction:column;gap:12px;-webkit-overflow-scrolling:touch}
+.msg{display:flex;gap:10px;max-width:520px;animation:msgIn .3s ease}
+@keyframes msgIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.msg.interviewer{align-self:flex-start}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;background:var(--ds);border:.5px solid var(--bdr)}
+.msg.interviewer .msg-avatar{border-color:#5a3a00;background:#1c1200}
+.msg-bubble{background:var(--ds);border:.5px solid var(--bdr);border-radius:var(--r);padding:10px 13px;font-size:12px;line-height:1.7;color:var(--dim)}
+.msg.interviewer .msg-bubble{border-color:#3a1a00;background:#140d00;color:var(--dt)}
+.msg.user .msg-bubble{background:var(--df);color:var(--dim)}
+.msg-bubble code{font-family:var(--mono);font-size:11px;background:#0a0510;padding:1px 5px;border-radius:3px;color:#8afa8a}
+.msg-bubble pre{background:#060310;border:.5px solid var(--bdr);border-radius:var(--rm);padding:10px;margin-top:6px;overflow-x:auto}
+.msg-bubble pre code{background:transparent;padding:0;font-size:11px;color:#8afa8a}
+.typing{display:flex;align-items:center;gap:4px;padding:12px 16px;background:#140d00;border:.5px solid #3a1a00;border-radius:var(--r);width:fit-content}
+.typing-dot{width:6px;height:6px;border-radius:50%;background:var(--gold);animation:td .8s ease-in-out infinite}
+.typing-dot:nth-child(2){animation-delay:.15s}
+.typing-dot:nth-child(3){animation-delay:.3s}
+@keyframes td{0%,60%,100%{transform:translateY(0)}30%{transform:translateY(-5px)}}
+.input-area{background:var(--db);border-top:.5px solid var(--bdr);padding:.875rem 1.25rem;flex-shrink:0}
+.input-tabs{display:flex;gap:6px;margin-bottom:8px}
+.input-tab{padding:4px 10px;background:none;border:.5px solid var(--bdr);border-radius:20px;color:var(--dim);font-family:var(--font);font-size:9px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.input-tab.active{border-color:var(--fire);color:var(--gold)}
+.input-row{display:flex;gap:8px;align-items:flex-end}
+.user-input{flex:1;background:var(--ds);border:.5px solid var(--bdr);border-radius:var(--rm);padding:10px 12px;color:var(--dt);font-family:var(--font);font-size:11px;resize:none;line-height:1.6;min-height:44px;max-height:150px}
+.user-input:focus{outline:none;border-color:var(--fire)}
+.user-input::placeholder{color:var(--dim)}
+.user-input.code-mode{font-family:var(--mono);color:#8afa8a;font-size:11px;background:#060310;min-height:80px}
+.send-btn{width:40px;height:40px;background:var(--df);border:.5px solid var(--fire);border-radius:var(--rm);color:var(--gold);font-size:18px;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.send-btn:hover{background:#1e0f28}
+.send-btn:disabled{opacity:.4;cursor:default}
+.end-btn{width:100%;padding:8px;background:none;border:.5px solid var(--bdr);border-radius:var(--rm);color:var(--dim);font-family:var(--font);font-size:10px;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;transition:all .2s;margin-top:8px}
+.end-btn:hover{border-color:#8a2020;color:#e07070}
+.end-btn:disabled{opacity:.4;cursor:wait}
+
+/* RESULTS */
+.results-wrap{max-width:540px;margin:0 auto;padding:1.5rem 1.25rem;display:flex;flex-direction:column;gap:16px;width:100%}
+.results-hero{text-align:center}
+.score-circle{width:100px;height:100px;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;margin:0 auto 14px;border:3px solid var(--fire)}
+.score-circle.great{border-color:var(--gold)}
+.score-circle.good{border-color:var(--fg)}
+.score-circle.avg{border-color:#c87040}
+.score-circle.low{border-color:#e07070}
+.score-num{font-size:30px;font-weight:600;line-height:1}
+.score-num.great{color:var(--gold)}.score-num.good{color:var(--fg)}.score-num.avg{color:#c87040}.score-num.low{color:#e07070}
+.score-denom{font-size:12px;color:var(--dim)}
+.result-level{font-size:14px;color:var(--gold);margin-bottom:4px}
+.result-rec{font-size:11px;color:var(--dim);line-height:1.65;max-width:360px;margin:0 auto}
+.result-section{background:var(--db);border:.5px solid var(--bdr);border-radius:var(--r);padding:14px}
+.rs-title{font-size:9px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:10px}
+.rs-title.good{color:var(--grt)}.rs-title.bad{color:#e07070}.rs-title.neutral{color:var(--dim)}
+.rs-item{display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:11px;color:var(--dim);line-height:1.6}
+.rs-item:last-child{margin-bottom:0}
+.rs-ico{flex-shrink:0;font-size:13px;margin-top:1px}
+.action-grid{display:flex;flex-direction:column;gap:8px}
+.action-btn{padding:11px;background:var(--df);border:.5px solid var(--bdr);border-radius:var(--rm);color:var(--gold);font-family:var(--font);font-size:11px;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:all .2s;text-decoration:none;display:block;text-align:center}
+.action-btn:hover{border-color:var(--fire);background:#1e0f28}
+.action-btn.primary{border-color:var(--gold)}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-inner">
+    <a class="back-btn" href="index.html">← Hub</a>
+    <div class="hdr-c">
+      <div class="t1">Entrevista Técnica</div>
+      <div class="t2">Simulador de Nivel Senior</div>
+    </div>
+    <div class="timer-badge" id="timer">--:--</div>
+  </div>
+</header>
+
+<!-- ════ SETUP ════ -->
+<div class="screen active" id="screen-setup">
+<div class="setup-wrap">
+  <div class="setup-hero">
+    <div class="interviewer-avatar">👨‍💻</div>
+    <div class="interviewer-name">Alejandro Reyes</div>
+    <div class="interviewer-title">Senior Software Engineer · 12 años de experiencia</div>
+    <div style="margin-top:12px"></div>
+    <div class="setup-intro">Te haré preguntas técnicas basadas en los módulos que selecciones. Responde como si fuera una entrevista real. Al finalizar recibirás una evaluación detallada de tu nivel.</div>
+  </div>
+
+  <div class="panel">
+    <div class="phi">Nivel objetivo</div>
+    <div class="diff-grid">
+      <button class="diff-btn sel" onclick="setDiff('junior',this)"><span class="diff-name">Junior</span><span class="diff-desc">0–2 años</span></button>
+      <button class="diff-btn" onclick="setDiff('mid',this)"><span class="diff-name">Mid-level</span><span class="diff-desc">2–5 años</span></button>
+      <button class="diff-btn" onclick="setDiff('senior',this)"><span class="diff-name">Senior</span><span class="diff-desc">5+ años</span></button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="phi">Tipo de entrevista</div>
+    <div class="type-grid">
+      <button class="type-btn sel" onclick="setType('mixta',this)"><span class="type-ico">⚡</span>Mixta</button>
+      <button class="type-btn" onclick="setType('conceptual',this)"><span class="type-ico">🧠</span>Conceptual</button>
+      <button class="type-btn" onclick="setType('codigo',this)"><span class="type-ico">💻</span>Coding</button>
+      <button class="type-btn" onclick="setType('diseno',this)"><span class="type-ico">🏗️</span>Diseño de Sistemas</button>
+    </div>
+  </div>
+
+  <div class="panel">
+    <div class="phi">Áreas a evaluar <span style="opacity:.5">(elige al menos 2)</span></div>
+    <div class="mod-check-grid" id="mod-checks"></div>
+  </div>
+
+  <div id="api-warning" class="key-warning" style="display:none">⚠ No hay API Key configurada. Ve a <a href="index.html" style="color:var(--gold)">Ajustes</a> para configurarla.</div>
+
+  <button class="start-btn" id="start-btn" onclick="startInterview()" disabled>
+    Comenzar Entrevista →
+  </button>
+</div>
+</div>
+
+<!-- ════ INTERVIEW ════ -->
+<div class="screen" id="screen-interview">
+  <div class="interview-wrap">
+    <div class="interview-status">
+      <div class="status-dot"></div>
+      <div class="status-text">Entrevistando con <b>Alejandro Reyes</b></div>
+      <div class="q-count">Intercambios: <b id="q-count">0</b></div>
+    </div>
+    <div class="chat-area" id="chat-area"></div>
+    <div class="input-area">
+      <div class="input-tabs">
+        <button class="input-tab active" onclick="setInputMode('text',this)">Texto</button>
+        <button class="input-tab" onclick="setInputMode('code',this)">💻 Código</button>
+      </div>
+      <div class="input-row">
+        <textarea class="user-input" id="user-input" placeholder="Escribe tu respuesta... (Ctrl+Enter para enviar)" rows="2" onkeydown="handleKey(event)"></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()">↑</button>
+      </div>
+      <button class="end-btn" id="end-btn" onclick="endInterview()">Finalizar entrevista →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ════ RESULTS ════ -->
+<div class="screen" id="screen-results">
+<div class="results-wrap">
+  <div class="results-hero">
+    <div class="score-circle" id="r-circle">
+      <div class="score-num" id="r-score">–</div>
+      <div class="score-denom">/10</div>
+    </div>
+    <div class="result-level" id="r-level">Evaluando...</div>
+    <div class="result-rec" id="r-rec"></div>
+  </div>
+  <div class="result-section" id="r-strengths">
+    <div class="rs-title good">✓ Fortalezas</div>
+    <div id="r-str-list"></div>
+  </div>
+  <div class="result-section" id="r-improvements">
+    <div class="rs-title bad">↗ Áreas a reforzar</div>
+    <div id="r-imp-list"></div>
+  </div>
+  <div class="result-section" id="r-detail">
+    <div class="rs-title neutral">📋 Preguntas destacadas</div>
+    <div id="r-det-list"></div>
+  </div>
+  <div class="action-grid">
+    <button class="action-btn primary" onclick="resetInterview()">↺ Nueva entrevista</button>
+    <a class="action-btn" href="index.html">← Volver al Hub</a>
+  </div>
+</div>
+</div>
+
+<script src="js/storage.js"></script>
+<script src="js/api.js"></script>
+<script>
+const MODS = [
+  {id:0,icon:'🧠',name:'Fundamentos'},{id:1,icon:'🐍',name:'Python Básico'},
+  {id:2,icon:'🔀',name:'Control de Flujo'},{id:3,icon:'⚙️',name:'Funciones'},
+  {id:4,icon:'📦',name:'Estructuras'},{id:5,icon:'🏗️',name:'POO'},
+  {id:6,icon:'📊',name:'Algoritmos'},{id:7,icon:'🌿',name:'Git'},
+  {id:8,icon:'🗄️',name:'Bases de Datos'},{id:9,icon:'🔌',name:'APIs REST'},
+  {id:10,icon:'🌐',name:'Web Frontend'},{id:11,icon:'🧪',name:'Testing'},
+  {id:12,icon:'🏛️',name:'Arquitectura'},{id:13,icon:'🔐',name:'Seguridad'},
+  {id:14,icon:'⚡',name:'DevOps'},{id:15,icon:'🏃',name:'Ágiles'},
+  {id:16,icon:'🎨',name:'Patrones'},{id:17,icon:'🌍',name:'Distribuidos'},
+  {id:18,icon:'☁️',name:'Cloud'},{id:19,icon:'🏆',name:'Proyecto Final'}
+];
+
+let config = { difficulty: 'junior', type: 'mixta', modules: new Set() };
+let history = [];
+let exchangeCount = 0;
+let timerInterval = null;
+let elapsedSeconds = 0;
+let inputMode = 'text';
+
+function buildModChecks() {
+  const grid = document.getElementById('mod-checks');
+  grid.innerHTML = MODS.map(m =>
+    `<div class="mod-check" id="mc-${m.id}" onclick="toggleMod(${m.id})">
+      <span class="mod-ico">${m.icon}</span>
+      <span style="flex:1;font-size:10px">${m.name}</span>
+      <span class="mod-chk-icon" id="mci-${m.id}"></span>
+    </div>`).join('');
+}
+
+function toggleMod(id) {
+  const el = document.getElementById(`mc-${id}`);
+  const ico = document.getElementById(`mci-${id}`);
+  if (config.modules.has(id)) {
+    config.modules.delete(id);
+    el.classList.remove('checked');
+    ico.textContent = '';
+  } else {
+    config.modules.add(id);
+    el.classList.add('checked');
+    ico.textContent = '✓';
+  }
+  updateStartBtn();
+}
+
+function updateStartBtn() {
+  const hasKey = API.hasApiKey();
+  const hasMods = config.modules.size >= 2;
+  document.getElementById('start-btn').disabled = !(hasKey && hasMods);
+  document.getElementById('api-warning').style.display = hasKey ? 'none' : 'block';
+}
+
+function setDiff(val, btn) {
+  config.difficulty = val;
+  document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+function setType(val, btn) {
+  config.type = val;
+  document.querySelectorAll('.type-btn').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+}
+
+async function startInterview() {
+  if (!API.hasApiKey()) {
+    alert('Configura tu API Key de Anthropic en el Hub (Ajustes) primero.');
+    return;
+  }
+  showScreen('interview');
+  startTimer();
+  history = [];
+  exchangeCount = 0;
+
+  const modNames = [...config.modules].map(id => MODS[id].name).join(', ');
+  const diffLabels = { junior: 'Junior (0-2 años)', mid: 'Mid-level (2-5 años)', senior: 'Senior (5+ años)' };
+  const typeLabels = { mixta: 'Mixta (conceptual + coding + diseño)', conceptual: 'Conceptual', codigo: 'Coding', diseno: 'Diseño de Sistemas' };
+
+  const systemPrompt = `Eres Alejandro Reyes, Senior Software Engineer con 12 años de experiencia en empresas de tecnología de primer nivel. Estás realizando una entrevista técnica real.
+
+PERFIL DEL ENTREVISTADOR:
+- Directo y profesional. No eres agresivo pero sí exigente.
+- Cuando el candidato da una respuesta superficial, haces preguntas de seguimiento más profundas.
+- Cuando la respuesta es buena, lo reconoces brevemente ("Bien", "Correcto", "Exacto") y avanzas.
+- Nunca das la respuesta correcta durante la entrevista.
+- Haces una pregunta a la vez. Esperas la respuesta antes de continuar.
+
+CONFIGURACIÓN:
+- Nivel objetivo: ${diffLabels[config.difficulty]}
+- Tipo: ${typeLabels[config.type]}
+- Áreas a evaluar: ${modNames}
+
+INSTRUCCIONES:
+- Empieza presentándote y haciendo la primera pregunta técnica directamente.
+- Las preguntas deben ser apropiadas para el nivel objetivo.
+- Habla en español. Sé conciso (máximo 4-5 oraciones por turno).
+- NUNCA rompas el personaje. NUNCA digas que eres una IA.`;
+
+  showTyping();
+  try {
+    const r = await API.callAnthropic(systemPrompt, [{ role: 'user', content: 'Comienza la entrevista.' }], { maxTokens: 600 });
+    removeTyping();
+    const msg = r.content[0].text;
+    history.push({ role: 'user', content: 'Comienza la entrevista.' });
+    history.push({ role: 'assistant', content: msg });
+    addMessage('interviewer', msg);
+  } catch(e) {
+    removeTyping();
+    addMessage('interviewer', 'Error al conectar con la IA. Verifica tu API Key e intenta de nuevo.');
+  }
+}
+
+async function sendMessage() {
+  const input = document.getElementById('user-input');
+  const text = input.value.trim();
+  if (!text) return;
+
+  const isCode = inputMode === 'code';
+  const formattedText = isCode ? `\`\`\`python\n${text}\n\`\`\`` : text;
+  const displayText = isCode ? text : text;
+
+  input.value = '';
+  input.style.height = 'auto';
+  document.getElementById('send-btn').disabled = true;
+
+  addMessage('user', displayText, isCode);
+  history.push({ role: 'user', content: formattedText });
+  exchangeCount++;
+  document.getElementById('q-count').textContent = exchangeCount;
+
+  showTyping();
+  try {
+    const systemPrompt = `Eres Alejandro Reyes, Senior Software Engineer realizando una entrevista técnica. Nivel objetivo: ${config.difficulty}. Tipo: ${config.type}. Continúa la entrevista de forma natural. Haz una pregunta a la vez. Sé directo y profesional. Habla en español. No rompas el personaje.`;
+    const r = await API.callAnthropic(systemPrompt, history, { maxTokens: 600 });
+    removeTyping();
+    const msg = r.content[0].text;
+    history.push({ role: 'assistant', content: msg });
+    addMessage('interviewer', msg);
+  } catch(e) {
+    removeTyping();
+    addMessage('interviewer', 'Error de conexión. Inténtalo de nuevo.');
+  }
+
+  document.getElementById('send-btn').disabled = false;
+  input.focus();
+}
+
+async function endInterview() {
+  if (exchangeCount < 3) {
+    alert('Necesitas al menos 3 intercambios para obtener una evaluación.');
+    return;
+  }
+
+  const btn = document.getElementById('end-btn');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="sp"></span> Generando evaluación...';
+  stopTimer();
+
+  const transcript = history
+    .filter(m => m.role !== 'system')
+    .map(m => `${m.role === 'assistant' ? 'ENTREVISTADOR' : 'CANDIDATO'}: ${m.content}`)
+    .join('\n\n');
+
+  const evalPrompt = `Evalúa esta entrevista técnica y genera un informe detallado.
+
+TRANSCRIPCIÓN:
+${transcript}
+
+Responde SOLO con JSON válido:
+{
+  "puntuacion": <número del 1 al 10>,
+  "nivel_demostrado": "<Junior|Junior avanzado|Mid-level|Mid-level avanzado|Senior>",
+  "resumen": "<2-3 oraciones>",
+  "recomendacion": "<consejo principal>",
+  "fortalezas": ["<fortaleza>", "<otra>", "<otra>"],
+  "areas_mejora": ["<área>", "<otra>", "<otra>"],
+  "bien_respondidas": ["<tema>", "<otro>"],
+  "mal_respondidas": ["<tema>", "<otro>"]
+}`;
+
+  try {
+    const r = await API.callAnthropic(
+      'Eres un evaluador experto de entrevistas técnicas. Responde SOLO con JSON válido.',
+      [{ role: 'user', content: evalPrompt }],
+      { maxTokens: 800 }
+    );
+    const eval_ = JSON.parse(r.content[0].text.replace(/```json|```/g, '').trim());
+    renderResults(eval_);
+    showScreen('results');
+    await saveResult(eval_);
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Finalizar entrevista →';
+    alert('Error al generar la evaluación. Intenta de nuevo.');
+  }
+}
+
+function renderResults(ev) {
+  const score = ev.puntuacion;
+  const sc = score >= 8.5 ? 'great' : score >= 7 ? 'good' : score >= 5 ? 'avg' : 'low';
+  const circle = document.getElementById('r-circle');
+  circle.className = `score-circle ${sc}`;
+  document.getElementById('r-score').className = `score-num ${sc}`;
+  document.getElementById('r-score').textContent = score.toFixed(1);
+  document.getElementById('r-level').textContent = ev.nivel_demostrado;
+  document.getElementById('r-rec').textContent = ev.resumen;
+  document.getElementById('r-str-list').innerHTML =
+    (ev.fortalezas || []).map(s => `<div class="rs-item"><span class="rs-ico">✓</span><span>${s}</span></div>`).join('');
+  document.getElementById('r-imp-list').innerHTML =
+    (ev.areas_mejora || []).map(s => `<div class="rs-item"><span class="rs-ico">→</span><span>${s}</span></div>`).join('');
+  const detList = [
+    ...(ev.bien_respondidas || []).map(s => `<div class="rs-item"><span class="rs-ico" style="color:var(--grt)">✓</span><span>${s}</span></div>`),
+    ...(ev.mal_respondidas || []).map(s => `<div class="rs-item"><span class="rs-ico" style="color:#e07070">✗</span><span>${s}</span></div>`)
+  ];
+  document.getElementById('r-det-list').innerHTML = detList.join('');
+}
+
+function showScreen(name) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${name}`).classList.add('active');
+}
+
+function addMessage(role, text, isCode = false) {
+  const chat = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = `msg ${role}`;
+  const avatarChar = role === 'interviewer' ? '👨‍💻' : '🧑‍💻';
+  div.innerHTML = `
+    <div class="msg-avatar">${avatarChar}</div>
+    <div class="msg-bubble">${formatMessage(text, isCode)}</div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function formatMessage(text, isCode) {
+  if (isCode) return `<pre><code>${escHtml(text)}</code></pre>`;
+  return escHtml(text)
+    .replace(/```[\w]*\n?([\s\S]*?)```/g, '<pre><code>$1</code></pre>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/\n/g, '<br>');
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function showTyping() {
+  const chat = document.getElementById('chat-area');
+  const div = document.createElement('div');
+  div.className = 'msg interviewer';
+  div.id = 'typing-msg';
+  div.innerHTML = `<div class="msg-avatar">👨‍💻</div>
+    <div class="typing"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+  chat.appendChild(div);
+  chat.scrollTop = chat.scrollHeight;
+}
+
+function removeTyping() {
+  document.getElementById('typing-msg')?.remove();
+}
+
+function setInputMode(mode, btn) {
+  inputMode = mode;
+  document.querySelectorAll('.input-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const input = document.getElementById('user-input');
+  input.classList.toggle('code-mode', mode === 'code');
+  input.placeholder = mode === 'code'
+    ? '# Escribe tu código aquí... (Ctrl+Enter para enviar)'
+    : 'Escribe tu respuesta... (Ctrl+Enter para enviar)';
+}
+
+function handleKey(e) {
+  if (e.key === 'Enter' && e.ctrlKey) {
+    e.preventDefault();
+    sendMessage();
+  }
+  const ta = e.target;
+  ta.style.height = 'auto';
+  ta.style.height = Math.min(ta.scrollHeight, 150) + 'px';
+}
+
+function startTimer() {
+  elapsedSeconds = 0;
+  timerInterval = setInterval(() => {
+    elapsedSeconds++;
+    const m = Math.floor(elapsedSeconds / 60);
+    const s = elapsedSeconds % 60;
+    document.getElementById('timer').textContent =
+      String(m).padStart(2,'0') + ':' + String(s).padStart(2,'0');
+  }, 1000);
+}
+
+function stopTimer() { clearInterval(timerInterval); }
+
+function resetInterview() {
+  history = [];
+  exchangeCount = 0;
+  elapsedSeconds = 0;
+  document.getElementById('timer').textContent = '--:--';
+  document.getElementById('chat-area').innerHTML = '';
+  document.getElementById('q-count').textContent = '0';
+  document.getElementById('end-btn').disabled = false;
+  document.getElementById('end-btn').textContent = 'Finalizar entrevista →';
+  showScreen('setup');
+}
+
+async function saveResult(ev) {
+  try {
+    const key = 'interviews-v1';
+    let history_s = [];
+    const r = await Storage.get(key);
+    if (r && r.value) history_s = JSON.parse(r.value);
+    history_s.unshift({
+      timestamp: new Date().toISOString(),
+      score: ev.puntuacion,
+      level: ev.nivel_demostrado,
+      difficulty: config.difficulty,
+      modules: [...config.modules].map(id => MODS[id].name)
+    });
+    if (history_s.length > 10) history_s = history_s.slice(0, 10);
+    await Storage.set(key, JSON.stringify(history_s));
+  } catch(e) {}
+}
+
+buildModChecks();
+updateStartBtn();
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
